@@ -1,48 +1,35 @@
 #!/usr/bin/python3
 """
-Module to fetch subreddit information from Reddit API.
-Includes number of subscribers and subreddit rules.
+This module queries the Reddit API to return the number of subscribers
+for a given subreddit.
 """
 
 import requests
-import json
 
 
-def get_subreddit_info_json(subreddit):
+def number_of_subscribers(subreddit):
     """
-    Returns the number of subscribers and rules for a given subreddit.
-    If subreddit is invalid, prints an error and returns None.
+    Returns the number of subscribers for a given subreddit.
+    If the subreddit is invalid, returns 0.
     """
-    headers = {'User-Agent': 'RedditInfoScript/0.1 by YourUsername'}
+    if not subreddit or not isinstance(subreddit, str):
+        return 0
 
-    # Reddit API endpoints
-    about_url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    rules_url = f"https://www.reddit.com/r/{subreddit}/about/rules.json"
-
-    # Make requests
-    about_resp = requests.get(about_url, headers=headers)
-    rules_resp = requests.get(rules_url, headers=headers)
-
-    if about_resp.status_code != 200 or rules_resp.status_code != 200:
-        print(json.dumps({"error": "Failed to fetch subreddit data"}, indent=4))
-        return
-
-    # Parse data
-    about_data = about_resp.json()['data']
-    rules_data = rules_resp.json()['rules']
-
-    # Create JSON output
-    output = {
-        "Name Of Subreddit": about_data['display_name_prefixed'],
-        "Subscriber Count": about_data['subscribers'],
-        "Description": about_data['public_description'],
-        "Rules": [rule['short_name'] for rule in rules_data]
+    url = f"https://www.reddit.com/r/{subreddit}/about.json"
+    headers = {
+        "User-Agent": "python:sub.count:v1.0 (by /u/fakeuser123)"
     }
 
-    # Print as pretty JSON
-    print(json.dumps(output, indent=4))
+    try:
+        response = requests.get(
+            url, headers=headers, allow_redirects=False, timeout=10)
 
-# Example usage
-get_subreddit_info_json("python")
+        if response.status_code != 200:
+            return 0
 
+        data = response.json().get("data", {})
+        return data.get("subscribers", 0)
+
+    except (requests.RequestException, ValueError, KeyError):
+        return 0
 
