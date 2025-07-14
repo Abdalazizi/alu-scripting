@@ -5,6 +5,7 @@ Queries the Reddit API and prints the titles of the first
 """
 
 import requests
+import sys
 
 
 def top_ten(subreddit):
