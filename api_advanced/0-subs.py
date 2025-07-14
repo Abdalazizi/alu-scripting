@@ -12,8 +12,8 @@ def get_subreddit_info_json(subreddit):
     """
     Returns the number of subscribers for a given subreddit.
     If subreddit is invalid, returns 0.
-    ""
-    "
+    """
+
     headers = {'User-Agent': 'RedditInfoScript/0.1 by YourUsername'}
 
     # Reddit API endpoints
