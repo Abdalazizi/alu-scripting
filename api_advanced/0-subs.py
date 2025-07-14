@@ -1,7 +1,13 @@
 #!/usr/bin/python3
 
+"""
+This is a module that defines a function that queries the Rddit API and
+returns the number of subscribers for a given subreddit.
+"""
+
 import requests
 import json
+
 
 def get_subreddit_info_json(subreddit):
     headers = {'User-Agent': 'RedditInfoScript/0.1 by YourUsername'}
