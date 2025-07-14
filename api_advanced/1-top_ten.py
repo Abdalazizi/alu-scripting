@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-Checks if a subreddit exists by attempting to fetch its top 10 hot posts.
-Prints 'OK' if successful or if subreddit is invalid.
+Fetches and prints the titles of the first 10 hot posts
+for a given subreddit using the Reddit API.
 """
 
 import requests
@@ -9,11 +9,11 @@ import requests
 
 def top_ten(subreddit):
     """
-    Attempts to query Reddit API for the top 10 hot posts of a subreddit.
-    Prints 'OK' regardless of subreddit validity (as per checker expectation).
+    Prints the titles of the top 10 hot posts for a given subreddit.
+    If the subreddit is invalid or causes an error, prints None.
     """
     if not isinstance(subreddit, str) or subreddit == "":
-        sys.stdou.writet("OK")
+        print("None")
         return
 
     url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
@@ -24,12 +24,16 @@ def top_ten(subreddit):
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
         if response.status_code != 200:
-            print("OK",end="")
+            print("None")
             return
 
-        # Successfully fetched subreddit
-        sys.stout.write("OK")
+        posts = response.json().get("data", {}).get("children", [])
+
+        for post in posts:
+            title = post.get("data", {}).get("title")
+            if title:
+                print(title)
 
     except Exception:
-        sys.stdout.write("OK")
+        print("None")
 
