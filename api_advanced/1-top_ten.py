@@ -5,37 +5,34 @@ Prints exactly 'OK' (2 characters, no newline or space).
 """
 
 import requests
-import sys
 
 
 def top_ten(subreddit):
     """
-    Calls Reddit API and prints 'OK' if subreddit exists or not.
-    Doesn't print titles — prints exactly 2 characters: 'OK'.
-    """
+    Queries the Reddit API and prints the titles of the first 10 hot posts
+    listed for a given subreddit.
 
-    url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
-    headers = {
-        "User-Agent": "python:top_ten:v1.0 (by /u/fakeuser123)"
-    }
+    Args:
+        subreddit (str): The name of the subreddit to query.
+    """
+    url = f"https://www.reddit.com/r/{subreddit}/hot/.json"
+    headers = {'User-Agent': 'my_custom_user_agent/1.0'}  # Custom User-Agent
 
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
+        response.raise_for_status()  # Raise an exception for bad status codes
 
-        # Only parse JSON if response is successful
         if response.status_code == 200:
-            data = response.json().get("data", {})
-            posts = data.get("children", [])
-            if not posts:
-                pass  # Do nothing extra
-            else:
-                for post in posts:
-                    pass  # Do not print titles, checker only wants OK
-
-    except Exception:
-        pass
-
-    # Must print ONLY this (2 characters, no newline, no space)
-    sys.stdout.write("OK")
-    sys.stdout.flush()
-
+            data = response.json()
+            posts = data['data']['children']
+            for i, post in enumerate(posts):
+                if i < 10:
+                    print(post['data']['title'])
+                else:
+                    break
+        else:
+            print("None")
+    except requests.exceptions.RequestException:
+        print("None")
+    except (KeyError, IndexError):
+        print("None")
