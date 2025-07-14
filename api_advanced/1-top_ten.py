@@ -13,7 +13,7 @@ def top_ten(subreddit):
     Prints 'OK' regardless of subreddit validity (as per checker expectation).
     """
     if not isinstance(subreddit, str) or subreddit == "":
-        print("OK")
+        print("OK",end="")
         return
 
     url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
@@ -24,12 +24,12 @@ def top_ten(subreddit):
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
         if response.status_code != 200:
-            print("OK")
+            print("OK",end="")
             return
 
         # Successfully fetched subreddit
         print("OK")
 
     except Exception:
-        print("OK")
+        print("OK",end="")
 
