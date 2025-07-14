@@ -10,10 +10,9 @@ import requests
 def top_ten(subreddit):
     """
     Prints the titles of the top 10 hot posts for a given subreddit.
-    If the subreddit is invalid or results in an error, prints None.
+    If the subreddit is invalid or causes an error, do nothing.
     """
     if not isinstance(subreddit, str) or subreddit == "":
-        print(None)
         return
 
     url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
@@ -24,7 +23,6 @@ def top_ten(subreddit):
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
         if response.status_code != 200:
-            print(None)
             return
 
         posts = response.json().get("data", {}).get("children", [])
@@ -32,5 +30,5 @@ def top_ten(subreddit):
             print(post.get("data", {}).get("title"))
 
     except Exception:
-        print(None)
+        return
 
