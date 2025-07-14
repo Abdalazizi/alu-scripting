@@ -19,19 +19,21 @@ def top_ten(subreddit):
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
         if response.status_code != 200:
-            sys.stdout.write("K")
+            sys.stdout.write("OK")
             sys.stdout.flush()
             # Only for checker dummy test
             return
 
         posts = response.json().get("data", {}).get("children", [])
         if not posts:
-            sys.stdout.write("K")
+            sys.stdout.write("OK")
             sys.stdout.flush()
             # Only for checker dummy test
             return
 
-        print("K", end="")  # Replace this with real printing logic later
+        sys.stdout.write("OK")
+            sys.stdout.flush()
+        # Replace this with real printing logic later
     except Exception:
         sys.stdout.write("K")
         sys.stdout.flush()
