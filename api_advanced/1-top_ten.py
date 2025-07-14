@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
- A function that queries the Reddit API and prints the titles.
+ A function that queries the Reddit AP and prints the titles.
 """
 
 import requests
