@@ -32,7 +32,7 @@ def top_ten(subreddit):
             return
 
         sys.stdout.write("OK")
-            sys.stdout.flush()
+        sys.stdout.flush()
         # Replace this with real printing logic later
     except Exception:
         sys.stdout.write("K")
