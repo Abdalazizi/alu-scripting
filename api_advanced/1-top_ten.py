@@ -16,11 +16,13 @@ def top_ten(subreddit):
 
     if response.status_code != 200:
         sys.stdout.write("OK")
+        sys.stdout.flush()
         return
 
     data = response.json().get("data")
     if data is None or len(data.get("children")) == 0:
         sys.stdout.write("OK")
+        sys.stdout.flush()
         return
 
     for child in data.get("children"):
