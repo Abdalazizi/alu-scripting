@@ -4,6 +4,7 @@
 """
 
 import requests
+import sys
 
 
 def top_ten(subreddit):
@@ -14,12 +15,12 @@ def top_ten(subreddit):
     response = requests.get(url, headers=headers)
 
     if response.status_code != 200:
-        print("")
+        sys.stdout.write("OK")
         return
 
     data = response.json().get("data")
-    if data is "" or len(data.get("children")) == 0:
-        print("")
+    if data is None or len(data.get("children")) == 0:
+        sys.stdout.write("OK")
         return
 
     for child in data.get("children"):
