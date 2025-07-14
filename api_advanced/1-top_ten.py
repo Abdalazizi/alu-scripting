@@ -1,42 +1,33 @@
 #!/usr/bin/python3
 """
-Queries the Reddit API and prints 'OK' (2 characters)
-if the subreddit exists or not. Used for ALX checker.
+Queries the Reddit API and prints the titles of the first
+10 hot posts for a given subreddit.
 """
 
 import requests
-import sys
 
 
 def top_ten(subreddit):
     """
-    Sends a request to Reddit and prints 'OK' (no newline).
-    Used by ALX checkers expecting 2-character exact output.
+    Prints the titles of the top 10 hot posts for a given subreddit.
+    If the subreddit is invalid or unavailable, prints None.
     """
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=10"
-    headers = {"User-Agent": "python:top_ten:v1.0 (by /u/fakeuser123)"}
+    url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
+    headers = {
+        "User-Agent": "python:alx.api.advanced:v1.0 (by /u/alx_student)"
+    }
 
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
 
-        # Avoid parsing JSON if response failed
         if response.status_code != 200:
-            sys.stdout.write("OK")
-            sys.stdout.flush()
+            print("None")
             return
 
         data = response.json().get("data", {})
         posts = data.get("children", [])
 
-        if not posts:
-            sys.stdout.write("OK")
-            sys.stdout.flush()
-            return
-
-        # Titles would normally be printed here, but not needed
-        sys.stdout.write("OK")
-        sys.stdout.flush()
-
+        for post in posts[:10]:
+            print(post.get("data", {}).get("title"))
     except Exception:
-        sys.stdout.write("OK")
-        sys.stdout.flush()
+        print("None")
